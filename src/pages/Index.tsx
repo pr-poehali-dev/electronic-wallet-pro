@@ -18,6 +18,8 @@ const Index = () => {
     transactions: 0,
     avgCashback: 0
   });
+  const [monthlySpending, setMonthlySpending] = useState('');
+  const [yearSavings, setYearSavings] = useState(0);
 
   const calculateCashback = () => {
     const amount = parseFloat(purchaseAmount);
@@ -27,6 +29,14 @@ const Index = () => {
       setBalance(balance + newCashback);
       setShowCalculation(true);
       setTimeout(() => setShowCalculation(false), 3000);
+    }
+  };
+
+  const calculateYearSavings = () => {
+    const monthly = parseFloat(monthlySpending);
+    if (!isNaN(monthly) && monthly > 0) {
+      const savings = monthly * 12 * 0.1;
+      setYearSavings(savings);
     }
   };
 
@@ -327,6 +337,97 @@ const Index = () => {
                   <p className="text-2xl font-bold text-accent">₽/месяц</p>
                 </Card>
               </div>
+
+              <Card className="max-w-3xl mx-auto p-8 bg-gradient-to-br from-card to-muted border-border animate-scale-in">
+                <div className="text-center mb-6">
+                  <h3 className="text-3xl font-bold mb-2">Сколько я сэкономлю?</h3>
+                  <p className="text-muted-foreground">Посчитайте свою выгоду от использования CashWallet</p>
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-6 items-end">
+                  <div>
+                    <Label htmlFor="monthly-spending" className="text-base mb-2 block">
+                      Сколько тратите в месяц?
+                    </Label>
+                    <Input
+                      id="monthly-spending"
+                      type="number"
+                      placeholder="Например: 50000"
+                      value={monthlySpending}
+                      onChange={(e) => {
+                        setMonthlySpending(e.target.value);
+                        setYearSavings(0);
+                      }}
+                      className="bg-background border-border text-lg h-12"
+                    />
+                  </div>
+                  
+                  <Button 
+                    onClick={calculateYearSavings}
+                    size="lg"
+                    className="bg-gradient-to-r from-primary to-secondary hover:opacity-90 text-white h-12"
+                  >
+                    <Icon name="Calculator" size={20} className="mr-2" />
+                    Рассчитать
+                  </Button>
+                </div>
+
+                {yearSavings > 0 && (
+                  <div className="mt-8 p-6 bg-gradient-to-r from-primary/20 to-secondary/20 border-2 border-primary/30 rounded-2xl animate-scale-in">
+                    <div className="text-center">
+                      <p className="text-muted-foreground mb-2">За год вы сэкономите</p>
+                      <p className="text-6xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent mb-4">
+                        {yearSavings.toLocaleString('ru-RU')} ₽
+                      </p>
+                      <div className="grid grid-cols-3 gap-4 mt-6">
+                        <div className="bg-background/50 rounded-lg p-3">
+                          <p className="text-xs text-muted-foreground mb-1">В месяц</p>
+                          <p className="text-xl font-bold text-primary">
+                            {(yearSavings / 12).toLocaleString('ru-RU', { maximumFractionDigits: 0 })} ₽
+                          </p>
+                        </div>
+                        <div className="bg-background/50 rounded-lg p-3">
+                          <p className="text-xs text-muted-foreground mb-1">В неделю</p>
+                          <p className="text-xl font-bold text-secondary">
+                            {(yearSavings / 52).toLocaleString('ru-RU', { maximumFractionDigits: 0 })} ₽
+                          </p>
+                        </div>
+                        <div className="bg-background/50 rounded-lg p-3">
+                          <p className="text-xs text-muted-foreground mb-1">В день</p>
+                          <p className="text-xl font-bold text-accent">
+                            {(yearSavings / 365).toLocaleString('ru-RU', { maximumFractionDigits: 0 })} ₽
+                          </p>
+                        </div>
+                      </div>
+                      <div className="mt-6 pt-6 border-t border-border/50">
+                        <p className="text-sm text-muted-foreground mb-3">На эти деньги можно купить:</p>
+                        <div className="flex justify-center gap-4 flex-wrap">
+                          {yearSavings >= 5000 && (
+                            <Badge variant="outline" className="text-sm py-2 px-3">
+                              🎧 Новые наушники
+                            </Badge>
+                          )}
+                          {yearSavings >= 10000 && (
+                            <Badge variant="outline" className="text-sm py-2 px-3">
+                              📱 Смартфон
+                            </Badge>
+                          )}
+                          {yearSavings >= 30000 && (
+                            <Badge variant="outline" className="text-sm py-2 px-3">
+                              ✈️ Путёвка на море
+                            </Badge>
+                          )}
+                          {yearSavings >= 60000 && (
+                            <Badge variant="outline" className="text-sm py-2 px-3">
+                              💻 Ноутбук
+                            </Badge>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </Card>
             </section>
 
             <section className="mb-20">
