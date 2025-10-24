@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -13,6 +13,11 @@ const Index = () => {
   const [purchaseAmount, setPurchaseAmount] = useState('');
   const [showCalculation, setShowCalculation] = useState(false);
   const [showRegistration, setShowRegistration] = useState(false);
+  const [animatedStats, setAnimatedStats] = useState({
+    totalSaved: 0,
+    transactions: 0,
+    avgCashback: 0
+  });
 
   const calculateCashback = () => {
     const amount = parseFloat(purchaseAmount);
@@ -120,6 +125,37 @@ const Index = () => {
       description: 'Кэшбэк начисляется автоматически'
     }
   ];
+
+  const yearStats = {
+    totalSaved: 6420,
+    transactions: 347,
+    avgCashback: 185
+  };
+
+  useEffect(() => {
+    const duration = 2000;
+    const steps = 60;
+    const interval = duration / steps;
+
+    let currentStep = 0;
+    const timer = setInterval(() => {
+      currentStep++;
+      const progress = currentStep / steps;
+
+      setAnimatedStats({
+        totalSaved: Math.floor(yearStats.totalSaved * progress),
+        transactions: Math.floor(yearStats.transactions * progress),
+        avgCashback: Math.floor(yearStats.avgCashback * progress)
+      });
+
+      if (currentStep >= steps) {
+        clearInterval(timer);
+        setAnimatedStats(yearStats);
+      }
+    }, interval);
+
+    return () => clearInterval(timer);
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted">
@@ -251,6 +287,46 @@ const Index = () => {
                   </div>
                 )}
               </Card>
+            </section>
+
+            <section className="mb-20">
+              <h2 className="text-4xl font-bold text-center mb-4">Ваша экономия за год</h2>
+              <p className="text-center text-muted-foreground mb-12">Реальные цифры, которые радуют</p>
+              
+              <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-20">
+                <Card className="p-8 bg-gradient-to-br from-primary/10 to-primary/5 border-primary/20 text-center animate-scale-in">
+                  <div className="w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <Icon name="Wallet" size={32} className="text-white" />
+                  </div>
+                  <p className="text-muted-foreground mb-2">Всего накоплено</p>
+                  <p className="text-5xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-1">
+                    {animatedStats.totalSaved.toLocaleString('ru-RU')}
+                  </p>
+                  <p className="text-2xl font-bold text-primary">рублей</p>
+                </Card>
+
+                <Card className="p-8 bg-gradient-to-br from-secondary/10 to-secondary/5 border-secondary/20 text-center animate-scale-in" style={{ animationDelay: '0.1s' }}>
+                  <div className="w-16 h-16 bg-gradient-to-br from-secondary to-accent rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <Icon name="ShoppingBag" size={32} className="text-white" />
+                  </div>
+                  <p className="text-muted-foreground mb-2">Транзакций</p>
+                  <p className="text-5xl font-bold bg-gradient-to-r from-secondary to-accent bg-clip-text text-transparent mb-1">
+                    {animatedStats.transactions}
+                  </p>
+                  <p className="text-2xl font-bold text-secondary">покупок</p>
+                </Card>
+
+                <Card className="p-8 bg-gradient-to-br from-accent/10 to-accent/5 border-accent/20 text-center animate-scale-in" style={{ animationDelay: '0.2s' }}>
+                  <div className="w-16 h-16 bg-gradient-to-br from-accent to-primary rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <Icon name="TrendingUp" size={32} className="text-white" />
+                  </div>
+                  <p className="text-muted-foreground mb-2">Средний кэшбэк</p>
+                  <p className="text-5xl font-bold bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent mb-1">
+                    {animatedStats.avgCashback}
+                  </p>
+                  <p className="text-2xl font-bold text-accent">₽/месяц</p>
+                </Card>
+              </div>
             </section>
 
             <section className="mb-20">
