@@ -90,6 +90,57 @@ const Index = () => {
     { name: 'Аптека.ру', category: 'Здоровье', cashback: '11%', logo: '💊' },
   ];
 
+  const testimonials = [
+    {
+      name: 'Анна Петрова',
+      role: 'Предприниматель',
+      avatar: '👩‍💼',
+      rating: 5,
+      text: 'За 6 месяцев накопила больше 18 000 рублей! Это реально работает. Теперь все покупки делаю только через CashWallet.',
+      savings: '18 000 ₽'
+    },
+    {
+      name: 'Дмитрий Соколов',
+      role: 'IT-специалист',
+      avatar: '👨‍💻',
+      rating: 5,
+      text: 'Удобнее любых банковских приложений. Кэшбэк начисляется моментально, а интерфейс просто огонь!',
+      savings: '24 500 ₽'
+    },
+    {
+      name: 'Мария Иванова',
+      role: 'Дизайнер',
+      avatar: '👩‍🎨',
+      rating: 5,
+      text: 'Перевела всю семью на этот кошелёк. За год накопили на отпуск! Спасибо за такой классный сервис.',
+      savings: '45 200 ₽'
+    },
+    {
+      name: 'Александр Ким',
+      role: 'Маркетолог',
+      avatar: '👨‍💼',
+      rating: 5,
+      text: 'Премиум-тариф окупился за первый месяц. 15% кэшбэка — это невероятно выгодно для моих расходов.',
+      savings: '31 800 ₽'
+    },
+    {
+      name: 'Елена Смирнова',
+      role: 'Фотограф',
+      avatar: '👩‍📷',
+      rating: 5,
+      text: 'Раньше пользовалась обычными картами с 1-2% кэшбэка. Здесь 10%! Разница колоссальная.',
+      savings: '12 400 ₽'
+    },
+    {
+      name: 'Игорь Волков',
+      role: 'Владелец бизнеса',
+      avatar: '👔',
+      rating: 5,
+      text: 'Бизнес-тариф идеален для компании. API интеграция заняла 15 минут. Команда довольна!',
+      savings: '127 000 ₽'
+    }
+  ];
+
   const features = [
     {
       icon: 'Wallet',
@@ -547,6 +598,56 @@ const Index = () => {
                     </div>
                   </Card>
                 ))}
+              </div>
+            </section>
+
+            <section className="mb-20">
+              <h2 className="text-4xl font-bold text-center mb-4">Отзывы пользователей</h2>
+              <p className="text-center text-muted-foreground mb-12">Более 50 000 довольных клиентов по всей России</p>
+              
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
+                {testimonials.map((testimonial, index) => (
+                  <Card 
+                    key={index}
+                    className="p-6 bg-card border-border hover:border-primary/50 transition-all duration-300 hover:scale-105 animate-fade-in"
+                    style={{ animationDelay: `${index * 0.1}s` }}
+                  >
+                    <div className="flex items-start gap-4 mb-4">
+                      <div className="text-5xl">{testimonial.avatar}</div>
+                      <div className="flex-1">
+                        <h4 className="font-bold text-lg">{testimonial.name}</h4>
+                        <p className="text-sm text-muted-foreground mb-2">{testimonial.role}</p>
+                        <div className="flex gap-1">
+                          {Array.from({ length: testimonial.rating }).map((_, i) => (
+                            <Icon key={i} name="Star" size={16} className="text-yellow-500 fill-yellow-500" />
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <p className="text-muted-foreground mb-4 leading-relaxed">
+                      "{testimonial.text}"
+                    </p>
+                    
+                    <div className="pt-4 border-t border-border">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-muted-foreground">Накоплено</span>
+                        <span className="font-bold text-primary text-lg">{testimonial.savings}</span>
+                      </div>
+                    </div>
+                  </Card>
+                ))}
+              </div>
+
+              <div className="text-center mt-12">
+                <p className="text-muted-foreground mb-4">Средняя оценка сервиса</p>
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <Icon key={i} name="Star" size={32} className="text-yellow-500 fill-yellow-500" />
+                  ))}
+                </div>
+                <p className="text-2xl font-bold">4.9 из 5.0</p>
+                <p className="text-sm text-muted-foreground mt-2">На основе 2 847 отзывов</p>
               </div>
             </section>
 
